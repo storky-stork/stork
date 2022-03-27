@@ -40,19 +40,14 @@ jobs:
       - run: npx nx affected --target=build --parallel=3
       - run: npx nx affected --target=test --parallel=2
 
-  deploy-orod:
-    needs: build 
+  deploy-prod:
     runs-on: ubuntu-latest
-    if: ${{ needs.build.outputs.branch == 'maib=n' }}
+    env:
+     AWS_DEFAULT_REGION: us-east-1
     steps:
-      - name: Download built frontend files
-        uses: actions/download-artifact@v2
-        with:
-          name: app-build
-          path: dist
-      - run: aws s3 sync . s3://app-${{ needs.build.outputs.branch}}-bucket
-        working-directory: dist
-        env: 
-          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_KEY }}
-          AWS_DEFAULT_REGION: "eu-central-1"
+     - name: configureawscredentials
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+        role-to-assume: arn:aws:iam::580976669327:role/github-actions-role
+        role-session-name: samplerolesession
+        aws-region: ${{env.AWS_DEFAULT_REGION}}
