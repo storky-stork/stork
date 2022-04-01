@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  # html:
+    # image: html
+    # # environment:
+    # #   - apiPath=http://api:3333
+    # ports:
+    #   - '80:80'
+  api:
+    image: api
+    ports:
+      - '8181:3333'
+    
+#   postgres:
+#     container_name: postgres
+#     image: postgres:latest
+#     ports:
+#     - "5432:5432"
+#     volumes:
+#     - /data/postgres:/data/postgres
+#     env_file:
+#     - docker.env
+#     networks:
+#     - postgres
+
+# networks:
+#   postgres:
+#     driver: bridge
