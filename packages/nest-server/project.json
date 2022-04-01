@@ -3,14 +3,29 @@
   "sourceRoot": "packages/nest-server/src",
   "projectType": "application",
   "targets": {
+    "deploy": {
+      "builder": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx build nest-server",
+          "docker build -f ./packages/nest-server/Dockerfile . -t api"
+        ],
+        "parallel": false
+      }
+    },
     "build": {
       "executor": "@nrwl/node:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/nest-server",
         "main": "packages/nest-server/src/main.ts",
         "tsConfig": "packages/nest-server/tsconfig.app.json",
-        "assets": ["packages/nest-server/src/assets"]
+        "assets": [
+          "packages/nest-server/src/assets"
+        ],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -34,14 +49,20 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/nest-server/**/*.ts"]
+        "lintFilePatterns": [
+          "packages/nest-server/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/nest-server"],
+      "outputs": [
+        "coverage/packages/nest-server"
+      ],
       "options": {
         "jestConfig": "packages/nest-server/jest.config.js",
         "passWithNoTests": true

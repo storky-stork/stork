@@ -4,6 +4,25 @@
   "sourceRoot": "packages/angular-client/src",
   "prefix": "stork",
   "targets": {
+    "deploy": {
+      "builder": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx build angular-client"
+        ],
+        "parallel": false
+      }
+    },
+    "serve-docker": {
+      "builder": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve angular-client --host 0.0.0.0 --poll 2000",
+          "docker build -f ./packages/angular-client/Dockerfile . -t html-debug"
+        ],
+        "parallel": false
+      }
+    },
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],

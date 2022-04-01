@@ -1,20 +1,34 @@
-name: CI-development
+name: CI/CD
 on:
   push:
     branches:
-      - main
+      - dev
   pull_request:
 
 permissions:
   id-token: write
 
 jobs:
+
+  aws-connection:
+    needs: build 
+    runs-on: ubuntu-latest
+    env:
+     AWS_DEFAULT_REGION: us-east-1
+    steps:
+     - name: configureawscredentials
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+        role-to-assume: arn:aws:iam::580976669327:role/github-actions-role
+        role-session-name: samplerolesession
+        aws-region: ${{env.AWS_DEFAULT_REGION}}
+        
   build:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
       - uses: actions/checkout@v2
-        name: Checkout [main]
+        name: Checkout [dev]
         with:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
@@ -23,8 +37,7 @@ jobs:
         with:
           node-version: '16'
       - run: npm install
-      - run: npx nx affected --target=build --parallel=3
-      - run: npx nx affected --target=test --parallel=2
+      - run: npx nx affected --target=deploy --parallel=3
 
   pr:
     runs-on: ubuntu-latest
@@ -43,14 +56,3 @@ jobs:
       - run: npx nx affected --target=build --parallel=3
       - run: npx nx affected --target=test --parallel=2
 
-  deploy-prod:
-    runs-on: ubuntu-latest
-    env:
-     AWS_DEFAULT_REGION: us-east-1
-    steps:
-     - name: configureawscredentials
-       uses: aws-actions/configure-aws-credentials@v1
-       with:
-        role-to-assume: arn:aws:iam::580976669327:role/github-actions-role
-        role-session-name: samplerolesession
-        aws-region: ${{env.AWS_DEFAULT_REGION}}
