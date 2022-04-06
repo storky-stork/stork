@@ -36,6 +36,8 @@ jobs:
           retention-days: 1
       - name: configureawscredentials
         uses: aws-actions/configure-aws-credentials@v1
+        env:
+          AWS_DEFAULT_REGION: us-east-1
         with:
         # role-to-assume: arn:aws:iam::580976669327:role/github-actions-role
         # role-session-name: samplerolesession
