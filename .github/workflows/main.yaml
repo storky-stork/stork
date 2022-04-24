@@ -46,11 +46,14 @@ jobs:
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          aws-region: ${{env.AWS_DEFAULT_REGION}}
 
+      - name: Deploy web site to S3 bucket
+        run: aws s3 sync ./dist/packages/angular-client/ s3://dev/ --delete
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Tag, and push api image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: storky
