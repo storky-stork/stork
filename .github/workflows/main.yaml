@@ -47,7 +47,9 @@ jobs:
          aws-region: ${{env.AWS_DEFAULT_REGION}}
 
       - name: Deploy web site to S3 bucket
-        run: aws s3 sync ./angular-client/ s3://dev/ --delete
+        run: |
+          ls
+          aws s3 sync angular-client/ s3://dev/ --delete
 
       - name: Login to Amazon ECR
         id: login-ecr
