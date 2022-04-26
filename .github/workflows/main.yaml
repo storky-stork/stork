@@ -64,8 +64,10 @@ jobs:
         run: |
           $Folder = 'dist/packages/nest-server'
           if(Test-Path -Path $Folder){
-            docker tag api $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG
-            docker push $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG
+            $image = $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG
+            Write-Host $image
+            docker tag api $image
+            docker push $image
           } else {
           'Nothing to deploy to ECR'
           }
