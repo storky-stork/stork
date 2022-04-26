@@ -14,8 +14,8 @@ describe('AppService', () => {
   });
 
   describe('getData', () => {
-    it('should return "Welcome to nest-server!"', () => {
-      expect(service.getData()).toEqual({ message: 'Welcome to nest-server!' });
+    it('should return "Ready to work!"', () => {
+      expect(service.getData()).toEqual({ message: 'Ready to work2!' });
     });
   });
 });
