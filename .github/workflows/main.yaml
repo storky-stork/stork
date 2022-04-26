@@ -60,18 +60,17 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: storky
           IMAGE_TAG: ${{ github.sha }}
-        shell: pwsh
+          SERVER_PATH: dist/packages/nest-server
         run: |
-          $Folder = 'dist/packages/nest-server'
-          if(Test-Path -Path $Folder){
-            $image = $env:ECR_REGISTRY/$env:ECR_REPOSITORY:$env:IMAGE_TAG
-            Write-Host $image
-            docker tag api $image
-            docker push $image
-          } else {
-          'Nothing to deploy to ECR'
-          }
-
+          if [ -d $SERVER_PATH ]
+          then
+              docker tag api $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+              docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          else
+              echo "Nothing to deploy to ECR"
+          fi
+        shell: bash
+        
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
