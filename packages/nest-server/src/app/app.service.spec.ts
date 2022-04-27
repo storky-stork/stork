@@ -15,7 +15,7 @@ describe('AppService', () => {
 
   describe('getData', () => {
     it('should return "Ready to work!"', () => {
-      expect(service.getData()).toEqual({ message: '-Ready to work!' });
+      expect(service.getData()).toEqual({ message: 'Ready to work!' });
     });
   });
 });
