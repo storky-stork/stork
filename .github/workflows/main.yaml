@@ -59,7 +59,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: storky
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
           SERVER_PATH: dist/packages/nest-server
         run: |
           if [ -d $SERVER_PATH ]
@@ -70,7 +70,7 @@ jobs:
               echo "Nothing to deploy to ECR"
           fi
         shell: bash
-        
+
   pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
